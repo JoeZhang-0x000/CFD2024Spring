@@ -1,6 +1,6 @@
 clear,clc;
 
-templateFiled = struct('p',0,'u',0,'rho',0,'gamma',7/5,'c',-1,'z',[0,0],'en',0,'range',[0,0],'type','unkown');
+templateFiled = struct('p',0,'u',0,'rho',0,'gamma',5/3,'c',-1,'z',[0,0],'en',0,'range',[0,0],'type','unkown');
 numFiled = 5;
 filed = repmat(templateFiled,numFiled,1);
 
@@ -44,19 +44,31 @@ for i = 1:2
 end
 
 % 绘图展示
-x_min = -5;
-x_max = 5;
-h = 0.1;
+x_min = -0.5;
+x_max = 0.5;
+h = 0.001;
 x = x_min:h:x_max;
 
 filed = getFiledRange(filed,x_min,x_max);
 
 plot_filed = filed;
 
-for t = 0:0.1:2
+% 折线图
+for t = 0:0.01:0.14
     clf();
     plot_sequence = [1,5,3,4,2];
     plot_filed = getTemFiled(filed, x, t, plot_sequence);
+    sgtitle(sprintf('t = %d', t));
+    showTemFiled(plot_filed,1);
+end
+
+% 等高线图
+colormap('jet');
+for t = 0:0.01:0.14
+    clf();
+    plot_sequence = [1,5,3,4,2];
+    plot_filed = getTemFiled(filed, x, t, plot_sequence);
+    sgtitle(sprintf('t = %d', t));
     showTemFiled(plot_filed,2);
 end
 
@@ -115,7 +127,7 @@ function showTemFiled(filed_list,type)
         title('entropy')
     end
 
-    pause(1);
+    pause(0.1);
 end
 
 % 给定x和t，求瞬态的区域值，按照seq的顺序返回
